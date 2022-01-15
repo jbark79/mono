@@ -29,7 +29,7 @@ public class Queue
     public void enqueue(Object x)
     {
         Knoten n = new Knoten(x);
-        if (back == null)
+        if (front == null)
         {
             back = n;
             front = n;

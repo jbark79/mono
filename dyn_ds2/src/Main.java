@@ -26,6 +26,20 @@ public class Main
             System.out.println(q.front());
             q.dequeue();
         }
+
+        for (int i=0;i<len;++i)
+            q.enqueue(i);
+
+        for (int i=0;i<len;++i)
+        {
+            System.out.println(q.front());
+            q.dequeue();
+        }
+        for (int i=0;i<len;++i)
+        {
+            System.out.println(q.front());
+            q.dequeue();
+        }
     }
 
     public static void main(String[] args)
