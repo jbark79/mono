@@ -34,8 +34,11 @@ public class Queue
             back = n;
             front = n;
         }
-        back.next = n;
-        back = n;
+        else
+        {
+            back.next = n;
+            back = n;
+        }
     }
 
     public void dequeue()
