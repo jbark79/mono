@@ -1,20 +1,22 @@
-public class List
+public class DoublyLinkedList
 {
     public class Knoten
     {
         Object wert;
+        Knoten vorgaenger;
         Knoten nachfolger;
 
-        public Knoten(Object w, Knoten n)
+        public Knoten(Object w, Knoten v, Knoten n)
         {
             wert = w;
+            vorgaenger = v;
             nachfolger = n;
         }
     }
 
     private Knoten first, last, act;
 
-    public List()
+    public DoublyLinkedList()
     {
         first = last = act = null;
     }
@@ -51,6 +53,22 @@ public class List
         else
             act = null;
     }
+
+    /**
+     * Falls die Liste nicht leer ist, es ein aktuelles Objekt gibt und dieses nicht
+     * das erste Objekt der Liste ist, wird das dem aktuellen Objekt in der Liste
+     * vorhergehende Objekt zum aktuellen Objekt, andernfalls gibt es nach Ausführung
+     * des Auftrags kein aktuelles Objekt, d. h., hasAccess() liefert den Wert
+     * false.
+     */
+    public void previous()
+    {
+        if ((!isEmpty()) && (hasAccess()) && (act != first))
+            act = act.vorgaenger;
+        else
+            act = null;
+    }
+
     /**
      * Falls die Liste nicht leer ist, wird das erste Objekt der Liste aktuelles
      * Objekt. Ist die Liste leer, geschieht nichts.
@@ -106,7 +124,7 @@ public class List
     {
         if (x != null)
         {
-            Knoten neu = new Knoten(x, null);
+            Knoten neu = new Knoten(x, last, null);
 
             if (isEmpty())
             {
@@ -127,30 +145,30 @@ public class List
      * gibt (hasAccess() == false), wird pObject in die Liste eingefügt und
      * es gibt weiterhin kein aktuelles Objekt. Falls es kein aktuelles Objekt gibt
      * (hasAccess() == false) und die Liste nicht leer ist oder pObject
-     * gleich null ist, bleibt die Liste unverändert.
+     * gleich null ist, bleibt die Liste unveraendert.
      */
     public void insert(Object x)
     {
         if (isEmpty())
         {
-            first = new Knoten(x, null);
+            first = new Knoten(x, null, null);
             last = first;
-            act = null; // nur zur Verdeutlichung!
+            act = null;
         }
 
         else if (hasAccess())
         {
             if (act == first)
             {
-                Knoten neu = new Knoten(x, first);
+                Knoten neu = new Knoten(x, null, first);
+                first.vorgaenger = neu;
                 first = neu;
             }
             else
             {
-                Knoten help = first;
-                while (help.nachfolger != act)
-                    help = help.nachfolger;
-                help.nachfolger = new Knoten(x, act);
+                Knoten help = act.vorgaenger;
+                help.nachfolger = new Knoten(x, help, act);
+                act.vorgaenger = help.nachfolger;
             }
         }
     }
@@ -160,7 +178,7 @@ public class List
      * eine leere Liste. Das aktuelle Objekt bleibt unverändert. Falls pList null
      * oder eine leere Liste ist, bleibt die Liste unverändert.
      */
-    public void concat(List pList)
+    public void concat(DoublyLinkedList pList)
     {
         last.nachfolger = pList.first;
         last = pList.last;
@@ -195,27 +213,24 @@ public class List
         {
             act = act.nachfolger;
             first = act;
+            first.vorgaenger = null;
             return;
         }
 
         // Fall 3b: es soll hinten gelöscht werden
         if (act == last)
         {
-            Knoten help = first;
-            while (help.nachfolger != act)
-                help = help.nachfolger;
-            help.nachfolger = null;
-            last = help;
+            act = act.vorgaenger;
+            last = act;
+            last.nachfolger = null;
+            act = null;
             return;
         }
 
         // Fall 4: es soll in der Mitte gelöscht werden
-        // Die Liste besteht aus mindestens drei Elementen
-        Knoten help = first;
-        while (help.nachfolger != act)
-            help = help.nachfolger;
+        act.vorgaenger.nachfolger = act.nachfolger;
+        act.nachfolger.vorgaenger = act.vorgaenger;
         act = act.nachfolger;
-        help.nachfolger = act;
     }
 
     /**
