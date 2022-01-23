@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Main
 {
     static void test_stack()
@@ -12,6 +14,17 @@ public class Main
             System.out.println(s.top());
             s.pop();
         }
+    }
+
+    static void test_SortedList()
+    {
+        Random rand = new Random();
+
+        SortedList l = new SortedList();
+        for (int i=0; i<1000; i++)
+           l.insert(rand.nextInt(100));
+
+        l.show();
     }
 
     static void test_queue()
@@ -44,7 +57,8 @@ public class Main
 
     public static void main(String[] args)
     {
-        test_stack();
-        test_queue();
+        test_SortedList();
+        //test_stack();
+        //test_queue();
     }
 }
