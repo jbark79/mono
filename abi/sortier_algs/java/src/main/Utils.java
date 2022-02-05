@@ -5,29 +5,36 @@ import java.util.random.*;
 
 public class Utils
 {
-    // generate an array containing n values x_i 
+    public static int abs(int n)
+    {
+        if (n < 0)
+            return -n;
+        return n;
+    }
+
+    // generate an array containing n values x_i
     // such that min <= x_i <= max
     public static int[] generate_random_int_arr(int n, int min, int max)
     {
-        Random rng = new Random(); 
+        Random rng = new Random();
         int[] arr = new int[n];
-        for (int i=0; i<n; ++i)
+        for (int i = 0; i < n; ++i)
         {
-            arr[i] = rng.nextInt(min+max+1)-min;
+            arr[i] = rng.nextInt(abs(min) + abs(max) + 1) - abs(min);
         }
         return arr;
     }
 
     public static String[] generate_random_string_arr(int n, int length)
     {
-        //String alphabet = new String("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+        // String alphabet = new String("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         String alphabet = new String("abcdefghijklmnopqrstuvwxyz");
-        Random rng = new Random(); 
+        Random rng = new Random();
         String[] arr = new String[n];
-        for (int i=0; i<n; ++i)
+        for (int i = 0; i < n; ++i)
         {
             String tmp = new String();
-            for (int j=0; j<length; ++j)
+            for (int j = 0; j < length; ++j)
             {
                 tmp += alphabet.charAt(rng.nextInt(alphabet.length()));
             }
@@ -38,7 +45,7 @@ public class Utils
 
     public static void print_arr(int[] arr)
     {
-        for (int i=0; i<arr.length; ++i)
+        for (int i = 0; i < arr.length; ++i)
         {
             System.out.println(arr[i]);
         }
@@ -46,7 +53,7 @@ public class Utils
 
     public static void print_arr(String[] arr)
     {
-        for (int i=0; i<arr.length; ++i)
+        for (int i = 0; i < arr.length; ++i)
         {
             System.out.println(arr[i]);
         }
@@ -54,9 +61,9 @@ public class Utils
 
     public static boolean is_sorted(int[] arr)
     {
-        for (int i=0; i<arr.length-1; ++i)
+        for (int i = 0; i < arr.length - 1; ++i)
         {
-            if (arr[i] > arr[i+1])
+            if (arr[i] > arr[i + 1])
                 return false;
         }
         return true;
@@ -64,9 +71,9 @@ public class Utils
 
     public static boolean is_sorted(String[] arr)
     {
-        for (int i=0; i<arr.length-1; ++i)
+        for (int i = 0; i < arr.length - 1; ++i)
         {
-            if (arr[i].compareTo(arr[i+1]) > 0)
+            if (arr[i].compareTo(arr[i + 1]) > 0)
                 return false;
         }
         return true;

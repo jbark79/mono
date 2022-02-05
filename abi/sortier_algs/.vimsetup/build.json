@@ -1,8 +1,0 @@
-{
-    "configs": {
-        "compile": {
-            "command": "time bash compile.sh",
-            "dir": "."
-        }
-    }
-}

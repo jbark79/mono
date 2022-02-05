@@ -1,8 +1,0 @@
-{
-    "configs": {
-        "run": {
-            "command": "java -cp build app.App",
-            "dir": "."
-        }
-    }
-}
