@@ -8,12 +8,12 @@ public class InsertionSort
         {
             int val = arr[i];
             int j = i - 1;
-            while (j > 0 && arr[j] > val)
+            while (j >= 0 && arr[j] > val)
             {
                 arr[j + 1] = arr[j];
                 --j;
             }
-            arr[j] = val;
+            arr[j+1] = val;
         }
     }
 
@@ -23,12 +23,12 @@ public class InsertionSort
         {
             String val = arr[i];
             int j = i - 1;
-            while (j > 0 && arr[j].compareTo(val) > 0)
+            while (j >= 0 && arr[j].compareTo(val) > 0)
             {
                 arr[j + 1] = arr[j];
                 --j;
             }
-            arr[j] = val;
+            arr[j+1] = val;
         }
     }
 }

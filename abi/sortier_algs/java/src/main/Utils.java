@@ -2,6 +2,7 @@ package main;
 
 import java.util.Random;
 import java.util.random.*;
+import java.util.TreeMap;
 
 public class Utils
 {
@@ -59,8 +60,46 @@ public class Utils
         }
     }
 
-    public static boolean is_sorted(int[] arr)
+    public static boolean is_sorted_and_permutated(int[] arr, int[] cp)
     {
+        var map = new TreeMap<Integer,Integer>();
+        for (int i : arr)
+        {
+            if (map.containsKey(i))
+            {
+                map.put(i, map.get(i)+1);
+            }
+            else
+            {
+                map.put(i, 1);
+            }
+        }
+        var map2 = new TreeMap<Integer,Integer>();
+        for (int i : cp)
+        {
+            if (map2.containsKey(i))
+            {
+                map2.put(i, map2.get(i)+1);
+            }
+            else
+            {
+                map2.put(i, 1);
+            }
+        }
+        for (var e : map.keySet())
+        {
+            if (map.get(e) != map2.getOrDefault(e,0))
+            {
+                return false;
+            }
+        }
+        for (var e : map2.keySet())
+        {
+            if (map2.get(e) != map.getOrDefault(e,0))
+            {
+                return false;
+            }
+        }
         for (int i = 0; i < arr.length - 1; ++i)
         {
             if (arr[i] > arr[i + 1])
@@ -69,8 +108,47 @@ public class Utils
         return true;
     }
 
-    public static boolean is_sorted(String[] arr)
+    public static boolean is_sorted_and_permutated(String[] arr, String[] cp)
     {
+        var map = new TreeMap<String,Integer>();
+        for (var i : arr)
+        {
+            if (map.containsKey(i))
+            {
+                map.put(i, map.get(i)+1);
+            }
+            else
+            {
+                map.put(i, 1);
+            }
+        }
+        var map2 = new TreeMap<String,Integer>();
+        for (var i : cp)
+        {
+            if (map2.containsKey(i))
+            {
+                map2.put(i, map2.get(i)+1);
+            }
+            else
+            {
+                map2.put(i, 1);
+            }
+        }
+        for (var e : map.entrySet())
+        {
+            if (map.get(e.getKey()) != map2.getOrDefault(e.getKey(),0))
+            {
+                return false;
+            }
+        }
+        for (var e : map2.entrySet())
+        {
+            if (map2.get(e.getKey()) != map.getOrDefault(e.getKey(),0))
+            {
+                return false;
+            }
+        }
+
         for (int i = 0; i < arr.length - 1; ++i)
         {
             if (arr[i].compareTo(arr[i + 1]) > 0)

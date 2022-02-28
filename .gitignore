@@ -1,2 +1,4 @@
 sync.sh
 push.sh
+.vimsetup/
+build/

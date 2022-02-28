@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[ngerman]{babel}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{eminence}{RGB}{108,48,130}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{129,20,83}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{lemma}{Lemma}
+
+\setlength{\parindent}{0em}
+
+\title{\vspace{-4.7cm}EA und RSA}
+\author{Barkoczi, Weskamp}
+\date{}
+
+\begin{document}
+\maketitle
+\section{Rechnen mit Modulo}
+Mit Hilfe der Modulorechnung k\"onnen wir Gemeinsamkeiten von Zahlen unter bestimmten Moduli untersuchen. Um kennzuzeichen,
+dass Zahlen unter einem bestimmten Modul \textit{kongruent} sind, benutzen wir das Symbol $\equiv$. Seien $a,b,c \in \mathbb{Z}$, dann
+gilt 
+\[
+    a \equiv b \mod c \iff c \mid a-b.
+\]
+Insbesondere gilt also 
+\[
+    a \equiv b \mod c \iff a-b = k \cdot c,
+\]
+f\"ur ein $k \in \mathbb{Z}$.\\
+
+Beispielsweise ist $12 \equiv 8 \mod 2$, da $2$ ein Teiler von $12-8=4$ ist.
+Aus der Definition folgt ebenfalls, dass zwei Zahlen $x,y$ kongruent $\mod z$ sind, wenn 
+$x$ und $y$ denselben Rest nach einer Division durch $z$ haben.
+
+\section{Euklidischer Algorithmus}
+Der euklidische Algorithmus ist eine effiziente Methode um den gr\"o{\ss}ten gemeinsamen
+Teiler zweier Zahlen $a,b$ zu bestimmen. Er funktioniert wie folgt:
+\begin{enumerate}
+    \item Man startet mit $a_1 = a$ und $b_1 = b$ und schreibt eine Gleichung in der Form \[ a_1 = b_1 \cdot x_1 + r_0, \]
+        wobei $x_1$ gr\"o{\ss}tm\"oglich ist.
+    \item Jede Gleichung f\"uhrt zu einer Neuen, bei der jedoch das vorherige $b_i$ zum neuen $a_{i+1}$ und das vorherige
+        $r_{i}$ zum neuen $b_{i+1}$ wird.
+    \item Dies f\"uhrt man solange durch, bis $r_i = 0$ gilt, und der Rest $r_{i-1}$ ist der gesuchte ggT.
+\end{enumerate}
+Ein konkretes Beispiel mit $a=126, b=72$:\\
+\begin{align*}
+    126 &= 78 \cdot 1 + 48\\
+    78 &= 48  \cdot 1 + 30\\
+    48 &= 30  \cdot 1 + 18\\
+    30 &= 18  \cdot 1 + 12\\
+    18 &= 12  \cdot 1 + 6\\
+    12 &= 6   \cdot 2 + 0.\\
+\end{align*}
+Wir sehen, der vorletzte Rest, in dem Fall $r_5$ ist unser gesuchter ggT.
+
+\pagebreak
+\section{Erweiterter euklidischer Algorithmus}
+Der erweiterte euklidische Algorithmus liefert uns eine Methode, bei gegebenen $b,c$ Gleichungen der Form
+\[
+    1 = bx + cy
+\]
+nach $(x,y)$ zu l\"osen. Diese Gleichung kann man auch wie folgt umstellen
+\begin{align*}
+    & 1 = bx + cy \\ 
+    \iff & 1 - bx = cy \\ 
+    \iff & c \mid 1 - bx \\ 
+    \iff & c \mid bx - 1. \\ 
+\end{align*}
+Dies ist jedoch wie in Sektion 1. erw\"ahnt equivalent zu $bx \equiv 1 \mod c$. Man sieht also eine Verbindung zwischen modularer Arithmetik
+und dem erweiterten euklidischen Algorithmus, bzw. dass sich Gleichungen in der Form mit Hilfe des erweiterten euklidischen Algorithmus l\"osen 
+lassen.
+
+Der Algorithmus an sich l\"asst sich am besten anhand eines konkreten Beispiels erkl\"aren. Also sei $b=1260$ und $c=31$
+\begin{enumerate}
+    \item Man wendet erst den normalen euklidischen Algorithmus an. Es folgen die Gleichungen:
+    \begin{align*}
+        1260 &= 31 \cdot 40 + 20\\ 
+        31 &= 20 \cdot 1 + 11\\ 
+        20 &= 11 \cdot 1 + 9\\ 
+        11 &= 9 \cdot 1 + 2\\ 
+        9 &= 2 \cdot 4 + 1\\ 
+        2 &= 1 \cdot 2 + 0\\ 
+    \end{align*}
+    Der ggT ist also $1$. 
+    \pagebreak
+    \item Nun stellen wir alle Gleichungen au{\ss}er die Letzte jeweils nach dem Rest um.
+    \begin{align}
+        20 &= 1260 + 31 \cdot (-40)\\ 
+        11 &= 31 + 20 \cdot (-1)\\
+        9 &= 20 + 11 \cdot (-1)\\
+        2 &= 11 + 9 \cdot (-1)\\
+        1 &= 9 + 2 \cdot (-4)
+    \end{align}
+    Zur Erinnerung: unser Ziel ist es, die Gleichung $1 = 1260 \cdot x + 31 \cdot y$ nach $(x,y)$ aufzul\"osen.
+    Die 5. Gleichung scheint schon mal in die richtige Richtung zu gehen.
+    \item Der n\"achste Schritt ist, uns von unten nach oben durch die Gleichungen zu arbeiten, in dem wir die Oberen in die Untere 
+        einsetzen. Wir fangen also an, die 4. in die 5. zu setzen, und erhalten
+        \begin{align*}
+            1 &= 9 + 2 \cdot (-4)\\
+              &= 9 + (11+9\cdot(-1)) \cdot (-4),
+        \end{align*}
+        Nun fassen wir zusammen und erhalten
+        \begin{align*}
+            1 &= 9 + (11+9\cdot(-1)) \cdot (-4)\\
+              &= 9 \cdot 5 + 11 \cdot (-4).
+        \end{align*}
+        Dieses Einf\"ugen und Zusammenfassen machen wir nun solange bis wir an die gew\"unschte Form kommen.
+        \begin{align*}
+            1 &= 9 \cdot 5 + 11 \cdot (-4)\\ 
+              &= (20+11\cdot(-1))\cdot 5 + 11 \cdot (-4)\\
+              &= 20 \cdot 5 + 11 \cdot (-9)\\
+              ~\\
+              &= 20 \cdot 5 + (31+20\cdot(-1)) \cdot (-9)\\
+              &= 20 \cdot 14 + 31 \cdot (-9)\\
+              ~\\
+              &= (1260+31\cdot(-40)) \cdot 14 + 31 \cdot (-9)\\
+              &= 1260 \cdot 14 + 31 \cdot (-569)\\
+        \end{align*}
+        Und wir sehen unsere L\"osung f\"ur (x,y) ist (14,-569). Dies ist \"ubrigens nur \textit{eine} L\"osung von \textit{unendlich} vielen L\"osungen. 
+        Weitere kann man durch die Addition der Gleichung mit $1260\cdot31 - 31\cdot 1260$ und geschicktem Umformen generieren
+        \begin{align*}
+            1 &= 1260 \cdot 14 + 31 \cdot (-569)\\
+            1 &= 1260 \cdot 14 + 31 \cdot (-569) + 1260\cdot31 - 31\cdot1260\\
+            1 &= 1260 \cdot (14-31) + 31 \cdot (-569+1260)\\
+        \end{align*}
+        Das Paar $(x,y) = (14-31,-569+1260) = (-17, 691)$ ist also beispielsweise eine weitere L\"osung.
+\end{enumerate}
+
+\section{RSA - Schl\"usselkonstruktion}
+Ein RSA-Schl\"usselpaar besteht aus zwei Teilen. Dem \"offentlichen Schl\"ussel den man ohne Probleme frei in Umlauf geben kann,
+und dem privaten bzw. geheimen Schl\"ussel, welcher unter keinen Umst\"anden weitergegeben werden darf. Die Schl\"usselkonstruktion
+l\"auft wie folgt ab:
+\begin{enumerate}
+    \item 
+        Man w\"ahlt zwei ausreichend gro{\ss}e (in der Regel 1000-stellig) Primzahlen $p,q$ und bildet das Produkt $N := pq$.
+        Dann sucht man eine ebenfalls ausreichend gro{\ss}e ganze Zahl $e$, die teilerfremd zu $\varphi(N)$ ist, wobei $\varphi$ die eulersche 
+        Phi-Funktion ist. Das Paar $(N,e)$ bildet unseren \"offentlichen RSA-Schl\"ussel.
+
+    \item
+        Da $\gcd(e,\varphi(N)) = 1$ gilt, ist die Gleichung \[ 1 = e \cdot d + \varphi(N) \cdot y \] nach (d,y) l\"osbar und insbesondere 
+        interessiert uns eine positive L\"osung f\"ur e. Dies ist nun mit Hilfe des erweiterten euklidischen Algorithmus leicht machbar.
+        Unseren privaten RSA-Schl\"ussel bildet somit das Paar $(N,d)$. 
+\end{enumerate}
+Eine Anmerkung ist, dass man nur mit dem Wissen von $\varphi(N)$ leicht an $d$ rankommt.
+Um $\varphi(N)$ jedoch zu bestimmen, braucht man die Primfaktorisierung von $N$. Da es keinen effizienten Algorithmus f\"ur 
+die Primfaktorisierung von Zahlen in dieser Gr\"o{\ss}enordnung gibt, ist es also praktisch nicht m\"oglich, mit dem alleinigem Wissen 
+\"uber $N$ und $e$, also dem \"offentlichen RSA-Schl\"ussel, $d$ zu finden. Dies macht das RSA-Verfahren robust.
+
+\subsection{Beispiel}
+Im folgenden werden wir beispielshalber ein RSA-Schl\"usselpaar konstruieren. Wir w\"ahlen $p=19$ und $q=71$.
+\footnote{Normalerweise w\"urde man nat\"urlich deutlich gr\"o{\ss}ere Zahlen w\"ahlen}
+Das Primzahlprodukt ist $N=19\cdot71=1349$ und $\varphi(N) = 18 \cdot 70 = 1260$. F\"ur $e$ w\"ahlen wir 31 und 
+da $\gcd(31,1260) = 1$ gilt, bildet dies einen wohlgeformten \"offentlichen RSA-Schl\"ussel $(1349,31)$.
+
+Um unseren privaten RSA-Schl\"ussel zu bilden, l\"osen wir die Gleichung \[ 1 = 1260 \cdot x + 31 \cdot e \] nach $(x,e)$, wobei wir eine
+positive L\"osung f\"ur $e$ wollen. Aber genau diese Gleichung haben wir in Sektion 3 gel\"ost und haben als L\"osung unter anderem 
+$(x,e) = (-17,691)$ erhalten. Somit lautet also unser privater RSA-Schl\"ussel $(1349,691)$.
+
+\section{RSA - Verschlüsselung und Entschlüsselung}
+Gegeben ist das folgende Lemma.
+\begin{lemma}
+    Sei $x \in \mathbb{Z}$, $N$ = $pq$ mit $p,q \in \mathbb{P}$ und $e,d \in \mathbb{Z}$, dann gilt
+    \[e \cdot d \equiv 1 \mod \varphi(N) \implies x^{ed} \equiv x \mod N\]
+    f"ur fast beliebige $x \in \mathbb{N}$.
+\end{lemma}
+\begin{proof}
+    Siehe Gruppe 3.
+\end{proof}
+Wenn wir zeigen k\"onnen, dass $e \cdot d \equiv 1 \mod \varphi(N)$ gilt, dann wissen wir dank des Lemmas, dass
+$x^{ed} \equiv x \mod \varphi(N)$ gilt. Jedoch ist $e \cdot d \equiv 1 \mod \varphi(N)$  equivalent zu $\varphi(N) 
+\mid e\cdot d -1$, bzw. $e\cdot d - k \cdot \varphi(N) = 1$ f\"ur ein $k \in \mathbb{Z}$. Aber das dies gilt haben wir 
+ja schon in unserer Schl\"usselkonstruktion gezeigt. Daher gilt nach dem Lemma $x^{ed} \equiv x \mod N$, was wir jetzt anwenden werden.
+\subsection{Verschl\"usselung und Entschl\"usselung}
+Sei $(N,e)$ ein beliebiger \"offentlicher RSA-Schl\"ussel und 
+sei $x \in \mathbb{Z}$ unsere Geheimnachricht, dann definieren wir $y := x^e \mod N$ als unsere verschl\"usselte Nachricht.
+
+Sei $(N,d)$ nun der zu $(N,e)$ passende private RSA-Schl\"ussel. Dann gilt \[y^d \equiv (x^e)^d \equiv x^{ed} \equiv x \mod N.\]
+Und somit k\"onnen wir erfolgreich Ver- und Entschl\"usseln.
+
+\section{RSA - Square-and-Multiply Algorithmus}
+Der Square-and-Multiply Algorithmus wird genutzt um bei gegebenem $a,b,c$ Gleichungen der Form $a^b \equiv x \mod c$ effizient
+nach $x$ zu l\"osen. 
+
+Dies ist wichtig, da bei dem RSA-Verfahren mit sehr gro{\ss}en Exponenten gerechnet wird. Am besten l\"asst sich
+der Algorithmus anhand des folgenden Beispiels demonstrieren: 
+Sei $a=269, b=159, c=1251$. Den Exponenten schreiben wir nun in Bin"arform $b \equiv (10011111)_2$. Dann erstellen wir
+eine Tabelle mit den folgenden Spalten
+\begin{itemize}
+    \item $i$: Dies ist eine Laufvariable.\\
+    \item $b_i$: Hier schreiben wir die $b_i$'te Ziffer der Bin"arform von $b$ (von rechts aus).\\
+    \item $a$: Hier speichern wir den aktuellen Wert $a_i$, wobei $a_i \equiv a^{2^i} \mod c$\\
+    \item $z$: Hier speichern wir den aktuellen Wert $z_i$, wobei $z_i \equiv z_{i-1} \cdot a_i \mod c$ falls $b_1 = 1$, und sonst 
+        "ubernehmen wir $z_{i-1}$. Dies hat den Effekt, das $z_i \equiv a^{(b_i, b_{i-1}, \ldots, b_0)_2} \mod c$ speichert. Somit gilt,
+        wenn $n$ die Anzahl der Ziffern von $(b)_2$ ist, dass $z_n \equiv a^b \mod c$ gilt.
+    \item Berechnet: Ein Hinweis, welcher Rechnung $z_i$ entspricht.
+\end{itemize}
+\begin{center}
+    \begin{tabular}{| m{0.2cm} | m{0.2cm}| m{4cm} | m{5cm} | m{3cm} |}
+    \hline
+        $i$ & $b_i$ & $a$ & $z$ & Berechnet\\
+    \hline
+    $0$ & $1$ & $269 \equiv 269 \mod 1251$ & $269 \equiv 269 \mod 1251$ & $269^1 \mod 1251$\\
+    \hline                                    
+    $1$ & $1$ & $269^2 \equiv 1054 \mod 1251$ & $269 \cdot 1054 \equiv 800 \mod 1251$& $269^3 \mod 1251$\\
+    \hline                                    
+    $2$ & $1$ & $1054^2 \equiv 28 \mod 1251$ & $800 \cdot 28 \equiv 1133 \mod 1251$& $269^7 \mod 1251$\\
+    \hline                                    
+        $3$ & $1$ & $28^2 \equiv 784 \mod 1251$ & $1133 \cdot 784 \equiv 62 \mod 1251$& $269^{15} \mod 1251$\\
+    \hline                                    
+        $4$ & $1$ & $784^2 \equiv 415 \mod 1251$ & $62 \cdot 415 \equiv 710 \mod 1251$& $269^{31} \mod 1251$\\
+    \hline                                    
+        $5$ & $0$ & $415^2 \equiv 838 \mod 1251$ & $710$& $269^{31} \mod 1251$\\
+    \hline                                    
+        $6$ & $0$ & $838^2 \equiv 433 \mod 1251$ & $710$& $269^{31} \mod 1251$\\
+    \hline                                    
+        $7$ & $1$ & $433^2 \equiv 1090 \mod 1251$ & $710 \cdot 1090 \equiv 782 \mod 1251$& $269^{159} \mod 1251$\\
+    \hline
+\end{tabular}
+\end{center}
+Man sieht, dass man mit Hilfe des Algorithmus die Rechnung in einer zu $b$ logarithmischen Anzahl an Schritten l"osen kann.
+Das hei{\ss}t, dass man statt $4294967296$ Schritten mit dem naiven Weg, nur noch etwa $32$ Schritte mit Square-and-Multiply braucht!
+
+\end{document}
