@@ -201,7 +201,7 @@ eine Tabelle mit den folgenden Spalten
     \item $i$: Dies ist eine Laufvariable.\\
     \item $b_i$: Hier schreiben wir die $b_i$'te Ziffer der Bin"arform von $b$ (von rechts aus).\\
     \item $a$: Hier speichern wir den aktuellen Wert $a_i$, wobei $a_i \equiv a^{2^i} \mod c$\\
-    \item $z$: Hier speichern wir den aktuellen Wert $z_i$, wobei $z_i \equiv z_{i-1} \cdot a_i \mod c$ falls $b_1 = 1$, und sonst 
+    \item $z$: Hier speichern wir den aktuellen Wert $z_i$, wobei $z_i \equiv z_{i-1} \cdot a_i \mod c$ falls $b_i = 1$, und sonst 
         "ubernehmen wir $z_{i-1}$. Dies hat den Effekt, das $z_i \equiv a^{(b_i, b_{i-1}, \ldots, b_0)_2} \mod c$ speichert. Somit gilt,
         wenn $n$ die Anzahl der Ziffern von $(b)_2$ ist, dass $z_n \equiv a^b \mod c$ gilt.
     \item Berechnet: Ein Hinweis, welcher Rechnung $z_i$ entspricht.
@@ -230,6 +230,6 @@ eine Tabelle mit den folgenden Spalten
 \end{tabular}
 \end{center}
 Man sieht, dass man mit Hilfe des Algorithmus die Rechnung in einer zu $b$ logarithmischen Anzahl an Schritten l"osen kann.
-Das hei{\ss}t, dass man statt $4294967296$ Schritten mit dem naiven Weg, nur noch etwa $32$ Schritte mit Square-and-Multiply braucht!
+Das hei{\ss}t, dass man beispielsweise statt $4294967296$ Schritten mit dem naiven Weg, nur noch etwa $32$ Schritte mit Square-and-Multiply braucht!
 
 \end{document}
