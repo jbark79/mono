@@ -43,7 +43,7 @@ public class Main
         System.out.println(o);
     }
 
-    static void test_list()
+    static void test_dllist()
     {
         DoublyLinkedList l = new DoublyLinkedList();
         l.append(5);
@@ -83,10 +83,48 @@ public class Main
         put(l.getObject());
     }
 
+    static void test_list()
+    {
+        List l = new List();
+        l.append(5);
+        l.append(7);
+        l.toFirst();
+        l.toLast();
+        l.insert(6);
+
+        l.toFirst();
+        l.remove();
+        l.remove();
+        l.remove();
+        l.print();
+
+        l.insert(5);
+        l.insert(5);
+        //l.print(); // 5
+        l.append(6);
+
+
+        List l2 = new List();
+        l2.append(7);
+        l2.append(8);
+
+        l.concat(l2);
+        l.print();
+
+        l.toLast();
+        put(l.getObject());
+        l.toFirst();
+        l.next();
+        l.next();
+        l.insert(12);
+        l.insert(12);
+        l.insert(12);
+        l.print();
+        put(l.getObject());
+    }
+
     public static void main(String[] args)
     {
-        //test_stack();
-        //test_queue();
         test_list();
     }
 }
